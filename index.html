@@ -1,0 +1,37 @@
+﻿<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Ajax and PHP based simple real time BBS</title>
+		<script src="jquery.js"></script>
+	</head>
+	<body>
+		<div id="display"></div>
+		<input type="text" id="message">
+		<input type="submit" id="add" value="submit">
+		<script>
+			$(function($){
+				get();
+				check();
+				var display=$('#display'),message=$("#message");
+				$('#add').click(function(event){
+					$.post('bbs.php?mode=add',{
+						data:message.val()
+					},function(data) {
+						message.val('');
+					});
+				});
+				function get(){
+					$.post('bbs.php?mode=display',{},function(data){
+						display.html(data);
+					});
+				}
+				function check(){
+					$.post('bbs.php?mode=check',{},function(data) {
+						display.html(data);
+						check();
+					});
+				}
+			});
+		</script>
+	</body>
+</html>
